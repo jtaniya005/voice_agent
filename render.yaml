@@ -22,3 +22,4 @@ services:
         value: "600"
       - key: MAX_CONCURRENT_SESSIONS
         value: "50"
+
