@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: mission-ssb-voice-api
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    plan: free
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-2.5-flash-native-audio-preview-12-2025
+      - key: GEMINI_VOICE
+        value: Fenrir
+      - key: ALLOWED_ORIGINS
+        value: "*"
+      - key: ENVIRONMENT
+        value: production
+      - key: LOG_LEVEL
+        value: info
+      - key: MAX_SESSION_SECONDS
+        value: "600"
+      - key: MAX_CONCURRENT_SESSIONS
+        value: "50"
