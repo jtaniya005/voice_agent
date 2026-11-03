@@ -1,6 +1,6 @@
-# Mission SSB Voice API (FastAPI + Gemini Live)
+# Voice API (FastAPI + Gemini Live)
 
-Standalone high-performance real-time conversational voice assistant backend microservice for Mission SSB, powered by Google Gemini Live Audio API (`gemini-2.5-flash-native-audio-preview-12-2025`).
+Standalone high-performance real-time conversational voice assistant backend microservice for Dashboard, powered by Google Gemini Live Audio API (`gemini-2.5-flash-native-audio-preview-12-2025`).
 
 This repository contains the pure backend API service, ready for 1-click deployment on **Render** (or any cloud/Docker provider).
 
@@ -20,7 +20,7 @@ External Project (React / Next.js / Mobile)
         ├── HTTP GET  /docs, /healthz, /readyz
         └── WSS       /live (PCM Audio + JSON Events)
                 │
-         Mission SSB Voice API (FastAPI)
+         Dashboard Voice API (FastAPI)
                 │
           Gemini Live API (gemini-2.5-flash-native-audio-preview-12-2025)
 ```
@@ -96,7 +96,7 @@ Once deployed, use your Render URL in your other frontend / project:
 const ws = new WebSocket("wss://<YOUR-RENDER-DOMAIN>/live");
 
 ws.onopen = () => {
-  console.log("Connected to Mission SSB Voice Guide API");
+  console.log("Connected to Dashboard Voice Guide API");
 };
 
 ws.onmessage = async (event) => {
