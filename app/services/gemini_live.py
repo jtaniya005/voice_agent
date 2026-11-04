@@ -40,7 +40,7 @@ class GeminiLiveService:
         # 2. Configure Gemini Live Audio session
         config = types.LiveConnectConfig(
             response_modalities=["AUDIO"],
-            system_instruction=types.Content(parts=[types.Part.from_text(SYSTEM_PROMPT)]),
+            system_instruction=types.Content(parts=[types.Part(text=SYSTEM_PROMPT)]),
             speech_config=types.SpeechConfig(
                 voice_config=types.VoiceConfig(
                     prebuilt_voice_config=types.PrebuiltVoiceConfig(voice_name=self.settings.GEMINI_VOICE)
