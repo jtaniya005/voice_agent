@@ -107,6 +107,7 @@ class GeminiLiveService:
         Receives binary PCM audio chunks and JSON control commands from the browser
         and routes them into the Gemini Live session.
         """
+        greeting_cooldown_until = 0.0
         while True:
             try:
                 message = await websocket.receive()
@@ -118,6 +119,8 @@ class GeminiLiveService:
 
             # Binary frame = 16 kHz mono PCM16 audio from client microphone
             if "bytes" in message and message["bytes"]:
+                if asyncio.get_running_loop().time() < greeting_cooldown_until:
+                    continue
                 raw_pcm = message["bytes"]
                 try:
                     await gemini_session.send(
@@ -137,6 +140,7 @@ class GeminiLiveService:
 
                     if cmd_type == "greet":
                         logger.info(f"{log_prefix} Triggering assistant greeting...")
+                        greeting_cooldown_until = asyncio.get_running_loop().time() + 1.5
                         await gemini_session.send(input=GREETING_TRIGGER, end_of_turn=True)
                     elif cmd_type == "end":
                         logger.info(f"{log_prefix} Client requested graceful session end.")
