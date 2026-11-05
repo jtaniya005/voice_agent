@@ -14,8 +14,14 @@ class SessionManager:
     def __init__(self, max_concurrent: int = 50):
         self.max_concurrent = max_concurrent
         self._active_sessions: Dict[str, WebSocket] = {}
-        self._lock = asyncio.Lock()
+        self._lock: Optional[asyncio.Lock] = None
         self.start_time = time.time()
+
+    @property
+    def lock(self) -> asyncio.Lock:
+        if self._lock is None:
+            self._lock = asyncio.Lock()
+        return self._lock
 
     @property
     def active_count(self) -> int:
@@ -26,22 +32,22 @@ class SessionManager:
         return round(time.time() - self.start_time, 2)
 
     async def can_accept(self) -> bool:
-        async with self._lock:
+        async with self.lock:
             return len(self._active_sessions) < self.max_concurrent
 
     async def register(self, session_id: str, websocket: WebSocket) -> None:
-        async with self._lock:
+        async with self.lock:
             self._active_sessions[session_id] = websocket
             logger.info(f"Registered session [{session_id}]. Total active: {len(self._active_sessions)}")
 
     async def unregister(self, session_id: str) -> None:
-        async with self._lock:
+        async with self.lock:
             if session_id in self._active_sessions:
                 del self._active_sessions[session_id]
                 logger.info(f"Unregistered session [{session_id}]. Total active: {len(self._active_sessions)}")
 
     async def close_all(self, reason: str = "Server shutdown") -> None:
-        async with self._lock:
+        async with self.lock:
             sessions = list(self._active_sessions.values())
             self._active_sessions.clear()
 

@@ -14,7 +14,7 @@ async def test_root():
         r = await ac.get("/")
         assert r.status_code == 200
         data = r.json()
-        assert data["service"] == "Mission SSB Voice API"
+        assert data["service"] == "SSB Journey Voice API"
         assert "websocket_url" in data
         print("[PASS] Root endpoint passed:", data)
 

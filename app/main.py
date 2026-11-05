@@ -18,13 +18,13 @@ async def lifespan(app: FastAPI):
     Application Lifespan Context Manager.
     Handles startup checks and graceful shutdown of all active sessions.
     """
-    logger.info("Starting Mission SSB Voice API (FastAPI)...")
+    logger.info("Starting SSB Journey Voice API (FastAPI)...")
     logger.info(f"Environment: {settings.ENVIRONMENT} | Port: {settings.PORT} | Model: {settings.GEMINI_MODEL}")
     logger.info(f"Allowed Origins: {settings.origins_list}")
 
     yield
 
-    logger.info("Shutting down Mission SSB Voice API...")
+    logger.info("Shutting down SSB Journey Voice API...")
     await session_manager.close_all(reason="Server shutting down")
     logger.info("Shutdown complete.")
 
@@ -58,8 +58,8 @@ class PureSecurityHeadersMiddleware:
 def create_application() -> FastAPI:
     """Factory creating and configuring the FastAPI application."""
     app = FastAPI(
-        title="Mission SSB Voice Guide API",
-        description="High-performance real-time conversational voice assistant microservice for Mission SSB.",
+        title="SSB Journey Voice Guide API",
+        description="High-performance real-time conversational voice assistant microservice for SSB Journey.",
         version="1.0.0",
         docs_url="/docs",
         redoc_url="/redoc",

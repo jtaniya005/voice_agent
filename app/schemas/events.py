@@ -8,7 +8,7 @@ from pydantic import BaseModel, Field
 
 class HealthResponse(BaseModel):
     status: str = Field(default="ok", example="ok")
-    service: str = Field(default="mission-ssb-voice-api")
+    service: str = Field(default="ssb-journey-voice-api")
     active_sessions: int = Field(default=0, example=2)
     max_concurrent_sessions: int = Field(default=50)
     model: str = Field(default="gemini-2.5-flash-native-audio-preview-09-2025")
@@ -43,6 +43,20 @@ class ErrorEvent(BaseModel):
     message: str
 
 
+class SkillSwitchedEvent(BaseModel):
+    type: Literal["skill_switched"] = "skill_switched"
+    skill: str
+    reason: Optional[str] = None
+
+
+class CandidateDetailsUpdatedEvent(BaseModel):
+    type: Literal["candidate_updated"] = "candidate_updated"
+    details: dict
+    is_complete: bool = False
+
+
 class ClientControlMessage(BaseModel):
     type: Optional[str] = None
+    skill: Optional[str] = None
+    details: Optional[dict] = None
 
