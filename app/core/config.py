@@ -28,7 +28,7 @@ class Settings(BaseSettings):
         default="gemini-2.5-flash-native-audio-preview-12-2025",
         description="Google Gemini Live Audio model name",
     )
-    GEMINI_VOICE: str = Field(default="Fenrir", description="Gemini voice name (e.g. Fenrir, Aoede, Kore, Puck, Charon)")
+    GEMINI_VOICE: str = Field(default="Aoede", description="Gemini voice name (e.g. Aoede, Kore, Puck, Charon, Fenrir)")
 
     # Security & Limits
     ALLOWED_ORIGINS: str = Field(
