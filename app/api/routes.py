@@ -59,6 +59,7 @@ async def root_info(settings: Settings = Depends(get_settings)):
         "portal": "SSB Journey",
         "version": "1.0.0",
         "environment": settings.ENVIRONMENT,
+        "voice": settings.GEMINI_VOICE,
         "docs_url": "/docs",
         "websocket_url": "/live",
         "skills_url": "/skills",

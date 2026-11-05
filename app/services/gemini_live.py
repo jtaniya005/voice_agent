@@ -83,18 +83,25 @@ class GeminiLiveService:
         skill_tool = self._build_tools_config()
         active_system_prompt = prompt_manager.get_unified_mentor_prompt(language="hinglish")
 
+        # Support ?voice= query param or default to Aoede (light, clear female voice)
+        query_voice = None
+        if hasattr(websocket, "query_params") and websocket.query_params:
+            query_voice = websocket.query_params.get("voice")
+        voice_to_use = query_voice or (
+            "Aoede" if self.settings.GEMINI_VOICE in ["Fenrir", "", None] else self.settings.GEMINI_VOICE
+        )
+        logger.info(f"{log_prefix} Initializing Gemini Live session with model: {self.settings.GEMINI_MODEL} | Voice: {voice_to_use}")
+
         config = types.LiveConnectConfig(
             response_modalities=["AUDIO"],
             system_instruction=types.Content(parts=[types.Part.from_text(text=active_system_prompt)]),
             speech_config=types.SpeechConfig(
                 voice_config=types.VoiceConfig(
-                    prebuilt_voice_config=types.PrebuiltVoiceConfig(voice_name=self.settings.GEMINI_VOICE)
+                    prebuilt_voice_config=types.PrebuiltVoiceConfig(voice_name=voice_to_use)
                 )
             ),
             tools=[skill_tool],
         )
-
-        logger.info(f"{log_prefix} Initializing Gemini Live session with model: {self.settings.GEMINI_MODEL}")
 
         try:
             # Wrap entire session in timeout watchdog
